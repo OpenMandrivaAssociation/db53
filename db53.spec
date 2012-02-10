@@ -1,4 +1,4 @@
-%define	__soversion	5.2
+%define	__soversion	5.3
 %define	_libdb_a	libdb-%{__soversion}.a
 %define	_libcxx_a	libdb_cxx-%{__soversion}.a
 
@@ -34,8 +34,8 @@
 
 Summary:	The Berkeley DB database library for C
 Name:		db52
-Version:	5.2.36
-Release:	3
+Version:	5.3.15
+Release:	1
 Source0:	http://download.oracle.com/berkeley-db/db-%{version}.tar.gz
 # statically link db1 library
 Patch0:		db-5.1.19-db185.patch
