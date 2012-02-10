@@ -33,7 +33,7 @@
 %bcond_with	asmmutex
 
 Summary:	The Berkeley DB database library for C
-Name:		db52
+Name:		db53
 Version:	5.3.15
 Release:	1
 Source0:	http://download.oracle.com/berkeley-db/db-%{version}.tar.gz
