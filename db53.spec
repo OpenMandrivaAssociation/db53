@@ -12,9 +12,6 @@
 %define libdbtcl	%{libname_orig}tcl%{__soversion}
 %define libdbjava	%{libname_orig}java%{__soversion}
 
-%define libdbnss	%{libname_orig}nss%{__soversion}
-%define libdbnssdev	%{libdbnss}-devel
-
 %ifnarch %[mips} %{arm}
 %bcond_without java
 %define gcj_support 0
@@ -23,8 +20,6 @@
 %bcond_without	sql
 %bcond_without	tcl
 %bcond_without	db1
-# Define to build a stripped down version to use for nss libraries
-%bcond_without	nss
 
 # Define to rename utilities and allow parallel installation
 %bcond_without	parallel
@@ -239,42 +234,6 @@ and database recovery. DB supports C, C++, Java and Perl APIs.
 This package contains the static libraries for building programs which
 use Berkeley DB.
 
-%if %{with nss}
-%package -n	%{libdbnss}
-Summary:	The Berkeley DB database library for NSS modules
-Group:		System/Libraries
-
-%description -n	%{libdbnss}
-The Berkeley Database (Berkeley DB) is a programmatic toolkit that provides
-embedded database support for both traditional and client/server applications.
-Berkeley DB includes B+tree, Extended Linear Hashing, Fixed and Variable-length
-record access methods, transactions, locking, logging, shared memory caching
-and database recovery. DB supports C, C++, Java and Perl APIs.
-
-This package contains the shared library required by some nss modules
-that use Berkeley DB.
-
-%package -n	%{libdbnssdev}
-Summary:	Development libraries/header files for building nss modules with Berkeley DB
-Group:		Development/Databases
-Requires:	%{libdbnss} = %{EVRD}
-Provides:	libdbnss-devel = %{EVRD}
-Provides:	%{_lib}dbnss-devel = %{EVRD}
-Provides:	db_nss-devel = %{EVRD}
-Provides:	libdb_nss-devel = %{EVRD}
-Conflicts:	db_nss-devel < %{__soversion}
-
-%description -n	%{libdbnssdev}
-The Berkeley Database (Berkeley DB) is a programmatic toolkit that provides
-embedded database support for both traditional and client/server applications.
-Berkeley DB includes B+tree, Extended Linear Hashing, Fixed and Variable-length
-record access methods, transactions, locking, logging, shared memory caching
-and database recovery. DB supports C, C++, Java and Perl APIs.
-
-This package contains the header files and libraries for building nss
-modules which use Berkeley DB.
-%endif
-
 %prep
 %setup -q -n db-%{version}
 
@@ -405,67 +364,10 @@ pushd ../lang/java
 popd
 %endif
 popd
-%if %{with nss}
-mkdir build_nss
-pushd build_nss
-CONFIGURE_TOP="../dist" \
-%configure2_5x	--includedir=%{_includedir}/db_nss \
-		--enable-shared --disable-static \
-		--enable-dbm \
-		--enable-systemtap \
-		--enable-o_direct \
-		--disable-tcl --disable-cxx --disable-java \
-		--with-uniquename=_nss \
-		--enable-compat185 \
-		--disable-cryptography --disable-queue \
-		--disable-replication --disable-verify \
-%if %{with asmmutex}
-%ifarch %{ix86}
-		--disable-posixmutexes --with-mutex=x86/gcc-assembly
-%endif
-%ifarch x86_64
-		--disable-posixmutexes --with-mutex=x86_64/gcc-assembly
-%endif
-%ifarch alpha
-		--disable-posixmutexes --with-mutex=ALPHA/gcc-assembly
-%endif
-%ifarch ia64
-		--disable-posixmutexes --with-mutex=ia64/gcc-assembly
-%endif
-%ifarch ppc
-		--disable-posixmutexes --with-mutex=PPC/gcc-assembly
-%endif
-%ifarch %{sparc}
-		--disable-posixmutexes --with-mutex=Sparc/gcc-assembly
-%endif
-%ifarch %{mips}
-		--disable-posixmutexes --with-mutex=MIPS/gcc-assembly
-%endif
-%ifarch %{arm}
-		--disable-posixmutexes --with-mutex=ARM/gcc-assembly
-%endif
-%else
-		--enable-posixmutexes --with-mutex=POSIX/pthreads/library
-%endif
-
-
-
-%make libdb_base=libdb_nss libso_target=libdb_nss-%{__soversion}.la libdir=/%{_lib}
-popd
-%endif
 
 %install
 make -C build_unix install_setup install_include install_lib install_utilities \
 	DESTDIR=%{buildroot} emode=755
-
-%if %{with nss}
-make -C build_nss install_include install_lib libdb_base=libdb_nss \
-	DESTDIR=%{buildroot} LIB_INSTALL_FILE_LIST=""
-
-mkdir -p %{buildroot}/%{_lib}
-mv %{buildroot}/%{_libdir}/libdb_nss-%{__soversion}.so %{buildroot}/%{_lib}
-ln -s  /%{_lib}/libdb_nss-%{__soversion}.so %{buildroot}%{_libdir}
-%endif
 
 ln -sf %{name}/db.h %{buildroot}%{_includedir}/db.h
 
@@ -491,8 +393,6 @@ rm -rf aot-compile-rpm
 aot-compile-rpm
 %endif
 %endif
-
-rm -rf %{buildroot}%{_includedir}/db_nss/db_cxx.h
 
 %if %{with sql}
 mv %{buildroot}%{_bindir}/{dbsql,db%{__soversion}_sql}
@@ -618,23 +518,3 @@ mv %{buildroot}%{_bindir}/{dbsql,db%{__soversion}_sql}
 %files -n %{libnamestatic}
 %defattr(644,root,root,755)
 %{_libdir}/*.a
-
-%if %{with nss}
-%files -n %{libdbnss}
-%defattr(755,root,root) 
-/%{_lib}/libdb_nss-%{__soversion}.so
-
-%files -n %{libdbnssdev}
-%defattr(644,root,root,755)
-%dir %{_includedir}/db_nss
-%{_includedir}/db_nss/db.h
-%if %{with db1}
-%{_includedir}/db_nss/db_185.h
-%endif
-%{_libdir}/libdb_nss.so
-%{_libdir}/libdb_nss-5.so
-#%{_libdir}/libdb_nss-%{__soversion}.la
-%{_libdir}/libdb_nss-%{__soversion}.so
-%endif
-
-
