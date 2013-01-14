@@ -495,24 +495,19 @@ mv %{buildroot}%{_bindir}/{dbsql,db%{__soversion}_sql}
 %{_includedir}/db.h
 %{_libdir}/libdb.so
 %{_libdir}/libdb-5.so
-%{_libdir}/libdb-%{__soversion}.la
 %{_libdir}/libdb_cxx.so
 %{_libdir}/libdb_cxx-5.so
-%{_libdir}/libdb_cxx-%{__soversion}.la
 %if %{with sql}
 %{_libdir}/libdb_sql.so
 %{_libdir}/libdb_sql-5.so
-%{_libdir}/libdb_sql-%{__soversion}.la
 %endif
 %if %{with tcl}
 %{_libdir}/libdb_tcl.so
 %{_libdir}/libdb_tcl-5.so
-%{_libdir}/libdb_tcl-%{__soversion}.la
 %endif
 %if %{with java}
 %{_libdir}/libdb_java.so
 %{_libdir}/libdb_java-5.so
-%{_libdir}/libdb_java-%{__soversion}.la
 %endif
 
 %files -n %{libnamestatic}
