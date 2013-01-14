@@ -384,9 +384,9 @@ mkdir -p %{buildroot}%{_jnidir}
 mv %{buildroot}%{_libdir}/db.jar %{buildroot}%{_jnidir}/db%{__soversion}-%{version}.jar
 (cd %{buildroot}%{_jnidir} && for jar in *-%{version}*; do %{__ln_s} ${jar} ${jar/-%{version}/}; done)
 
-%{__mkdir_p} %{buildroot}%{_javadocdir}/db%{__soversion}-%{version}
-%{__cp} -a lang/sql/jdbc/doc/* %{buildroot}%{_javadocdir}/db%{__soversion}-%{version}
-%{__ln_s} db%{__soversion}-%{version} %{buildroot}%{_javadocdir}/db%{__soversion}
+mkdir -p %{buildroot}%{_javadocdir}/db%{__soversion}-%{version}
+cp -a lang/sql/jdbc/doc/* %{buildroot}%{_javadocdir}/db%{__soversion}-%{version}
+ln -s db%{__soversion}-%{version} %{buildroot}%{_javadocdir}/db%{__soversion}
 
 %if %{gcj_support}
 rm -rf aot-compile-rpm
