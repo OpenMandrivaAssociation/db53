@@ -41,7 +41,6 @@ Source0:	http://download.oracle.com/berkeley-db/db-%{version}.tar.gz
 Patch0:		db-5.1.19-db185.patch
 Patch1:		db-5.1.25-sql_flags.patch
 Patch2:		db-5.1.19-tcl-link.patch
-Patch3:		db-5.3.15-remove-leading-whitespace-of-config-strings.patch
 # fedora patches
 Patch101:	db-4.7.25-jni-include-dir.patch
 URL:		http://www.oracle.com/technology/software/products/berkeley-db/
@@ -286,7 +285,6 @@ rm -r lang/sql/jdbc/doc
 %patch0 -p1 -b .db185~
 %patch1 -p1 -b .sql_flags~
 %patch2 -p1 -b .tcl~
-%patch3 -p1 -b .string_whitespace~
 
 # fedora patches
 %patch101 -p1 -b .jni~
