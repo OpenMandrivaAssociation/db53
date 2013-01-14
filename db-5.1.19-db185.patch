@@ -8,7 +8,7 @@ diff -p -up db-5.1.19/dist/Makefile.in.db185~ db-5.1.19/dist/Makefile.in
 -DB185INC=	-c @CFLAGS@ -I$(topdir) @CPPFLAGS@
 -DB185LIB=
 +DB185INC=	-c @CFLAGS@ -I/usr/include/db1 -I$(topdir) @CPPFLAGS@
-+DB185LIB=	-Wl,-static,-ldb1,-Bdynamic
++DB185LIB=	-Wl,-Bstatic,-ldb1,-Bdynamic
  
  ##################################################
  # Performance Event Monitoring definitions
