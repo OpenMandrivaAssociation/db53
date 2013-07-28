@@ -50,7 +50,7 @@ Patch101:	db-4.7.25-jni-include-dir.patch
 BuildConflicts:	libreoffice-core
 BuildRequires:	ed
 BuildRequires:	libtool
-BuildRequires:	systemtap
+BuildRequires:	systemtap-devel
 %if %{with sql}
 BuildRequires:	pkgconfig(sqlite3)
 %endif
