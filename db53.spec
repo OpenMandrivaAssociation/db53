@@ -48,7 +48,6 @@ Patch3:		arm-thumb-mutex_db5.patch
 # fedora patches
 Patch101:	db-4.7.25-jni-include-dir.patch
 
-BuildConflicts:	libreoffice-core
 BuildRequires:	ed
 BuildRequires:	libtool
 BuildRequires:	systemtap-devel
