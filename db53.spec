@@ -19,12 +19,12 @@
 %define gcj_support 0
 %endif
 
-%bcond_without uclibc
-%bcond_without sql
-%bcond_without tcl
-%bcond_without db1
+%bcond_with	uclibc
+%bcond_without	sql
+%bcond_without	tcl
+%bcond_without	db1
 # Define to build a stripped down version to use for nss libraries
-%bcond_with	 nss
+%bcond_with	nss
 
 # Define to rename utilities and allow parallel installation
 %bcond_without parallel
