@@ -1,7 +1,8 @@
 %define sname	db
-%define binext	%(echo %{api} | sed -e 's|\\.||g')
+%define version	5.3.21
 %define api %(echo %{version}|cut -d. -f1,2)
 %define shortapi %(echo %{version}|cut -d. -f1,1)
+%define binext	%(echo %{api} | sed -e 's|\\.||g')
 
 %define libname		%mklibname %{sname} %{api}
 %define devname		%mklibname %{sname} %{api} -d
@@ -34,7 +35,7 @@
 
 Summary:	The Berkeley DB database library for C
 Name:		%{sname}%{binext}
-Version:	5.3.21
+Version:	%{version}
 Release:	7
 License:	BSD
 Group:		System/Libraries
