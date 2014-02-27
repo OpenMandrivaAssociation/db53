@@ -1,6 +1,7 @@
 %define sname	db
-%define api	5.3
 %define binext	%(echo %{api} | sed -e 's|\\.||g')
+%define api %(echo %{version}|cut -d. -f1,2)
+%define shortapi %(echo %{version}|cut -d. -f1,1)
 
 %define libname		%mklibname %{sname} %{api}
 %define devname		%mklibname %{sname} %{api} -d
@@ -34,7 +35,7 @@
 Summary:	The Berkeley DB database library for C
 Name:		%{sname}%{binext}
 Version:	5.3.21
-Release:	6
+Release:	7
 License:	BSD
 Group:		System/Libraries
 Url:		http://www.oracle.com/technology/software/products/berkeley-db/
@@ -165,8 +166,7 @@ Requires:	%{libdbjava} = %{EVRD}
 %endif
 Requires:	%{libdbcxx} = %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
-Provides:	%{sname}5-devel = %{EVRD}
-Provides:	%{sname}-devel = %{EVRD}
+Provides:	%{sname}%{shortapi}-devel = %{EVRD}
 
 %description -n	%{devname}
 This package contains the header files, libraries, and documentation for
