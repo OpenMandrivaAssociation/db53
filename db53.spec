@@ -1,5 +1,7 @@
 %define sname	db
-%define api	5.3
+%define version	5.3.21
+%define api %(echo %{version}|cut -d. -f1,2)
+%define shortapi %(echo %{version}|cut -d. -f1,1)
 %define binext	%(echo %{api} | sed -e 's|\\.||g')
 
 %define libname		%mklibname %{sname} %{api}
@@ -14,7 +16,7 @@
 %define libdbnss	%mklibname %{sname}nss %{api}
 %define devdbnss	%mklibname %{sname}nss %{api} -d
 
-%ifnarch %[mips} %{arm}
+%ifnarch %[mips} %{arm} aarch64
 %bcond_without java
 %define gcj_support 0
 %endif
@@ -34,8 +36,8 @@
 
 Summary:	The Berkeley DB database library for C
 Name:		%{sname}%{binext}
-Version:	5.3.21
-Release:	3
+Version:	%{version}
+Release:	8
 License:	BSD
 Group:		System/Libraries
 Url:		http://www.oracle.com/technology/software/products/berkeley-db/
@@ -47,6 +49,7 @@ Patch2:		db-5.1.19-tcl-link.patch
 Patch3:		arm-thumb-mutex_db5.patch
 # fedora patches
 Patch101:	db-4.7.25-jni-include-dir.patch
+Patch102:	db53-aarch64.patch
 
 BuildRequires:	ed
 BuildRequires:	libtool
@@ -188,6 +191,7 @@ Requires:	%{libdbjava} = %{EVRD}
 %endif
 Requires:	%{libdbcxx} = %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
+Provides:	%{sname}%{shortapi}-devel = %{EVRD}
 Provides:	%{sname}5-devel = %{EVRD}
 Provides:	%{sname}-devel = %{EVRD}
 Conflicts:	%{sname}-devel < %{api}
