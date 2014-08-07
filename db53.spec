@@ -1,20 +1,20 @@
-%define sname	db
-%define version	5.3.21
+%define sname db
+%define version 5.3.21
 %define api %(echo %{version}|cut -d. -f1,2)
 %define shortapi %(echo %{version}|cut -d. -f1,1)
-%define binext	%(echo %{api} | sed -e 's|\\.||g')
+%define binext %(echo %{api} | sed -e 's|\\.||g')
 
-%define libname		%mklibname %{sname} %{api}
-%define devname		%mklibname %{sname} %{api} -d
-%define statname	%mklibname %{sname} %{api} -s -d
+%define libname %mklibname %{sname} %{api}
+%define devname %mklibname %{sname} %{api} -d
+%define statname %mklibname %{sname} %{api} -s -d
 
-%define libdbcxx	%mklibname %{sname}cxx %{api}
-%define libdbsql	%mklibname %{sname}sql %{api}
-%define libdbtcl	%mklibname %{sname}tcl %{api}
-%define libdbjava	%mklibname %{sname}java %{api}
+%define libdbcxx %mklibname %{sname}cxx %{api}
+%define libdbsql %mklibname %{sname}sql %{api}
+%define libdbtcl %mklibname %{sname}tcl %{api}
+%define libdbjava %mklibname %{sname}java %{api}
 
-%define libdbnss	%mklibname %{sname}nss %{api}
-%define devdbnss	%mklibname %{sname}nss %{api} -d
+%define libdbnss %mklibname %{sname}nss %{api}
+%define devdbnss %mklibname %{sname}nss %{api} -d
 
 %ifnarch %[mips} %{arm} aarch64
 %bcond_without java
@@ -22,9 +22,9 @@
 %endif
 
 %bcond_with	uclibc
-%bcond_without	sql
-%bcond_without	tcl
-%bcond_without	db1
+%bcond_without sql
+%bcond_without tcl
+%bcond_without db1
 # Define to build a stripped down version to use for nss libraries
 %bcond_with	nss
 
@@ -327,7 +327,7 @@ popd
 
 pushd build_unix
 CONFIGURE_TOP="../dist" \
-%configure2_5x \
+%configure \
 %if %{with parallel}
 	--program-transform-name='s,db_,db%{binext}_,' \
 %endif
@@ -400,7 +400,7 @@ popd
 mkdir build_nss
 pushd build_nss
 CONFIGURE_TOP="../dist" \
-%configure2_5x \
+%configure \
 	--includedir=%{_includedir}/db_nss \
 	--enable-shared \
 	--disable-static \
