@@ -286,6 +286,9 @@ cd dist
 ./s_config
 
 %build
+export CC=gcc
+export CXX=g++
+
 %ifarch ppc
 CFLAGS="$CFLAGS -D_GNU_SOURCE -D_REENTRANT"
 %endif
