@@ -336,7 +336,7 @@ CONFIGURE_TOP="../dist" \
 %endif
 	--includedir=%{_includedir}/%{name} \
 	--enable-shared \
-	--enable-static \
+	--disable-static \
 	--enable-dbm \
 	--enable-systemtap \
 	--enable-o_direct \
