@@ -49,7 +49,7 @@ Patch102:	db53-aarch64.patch
 
 BuildRequires:	ed
 BuildRequires:	libtool
-BuildRequires:	systemtap-devel
+#BuildRequires:	systemtap-devel
 %if %{with sql}
 BuildRequires:	pkgconfig(sqlite3)
 %endif
@@ -326,7 +326,6 @@ CONFIGURE_TOP="../dist" \
 	--enable-shared \
 	--disable-static \
 	--enable-dbm \
-	--enable-systemtap \
 	--enable-o_direct \
 %if %{with sql}
 	--enable-sql \
@@ -398,7 +397,6 @@ CONFIGURE_TOP="../dist" \
 	--enable-shared \
 	--disable-static \
 	--enable-dbm \
-	--enable-systemtap \
 	--enable-o_direct \
 	--disable-tcl \
 	--disable-cxx \
