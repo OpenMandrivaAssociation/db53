@@ -43,6 +43,7 @@ Patch0:		db-5.1.19-db185.patch
 Patch1:		db-5.1.25-sql_flags.patch
 Patch2:		db-5.1.19-tcl-link.patch
 Patch3:		arm-thumb-mutex_db5.patch
+Patch4:		atomic.patch
 # fedora patches
 Patch101:	db-4.7.25-jni-include-dir.patch
 Patch102:	db53-aarch64.patch
@@ -324,7 +325,7 @@ CONFIGURE_TOP="../dist" \
 %endif
 	--includedir=%{_includedir}/%{name} \
 	--enable-shared \
-	--disable-static \
+	--enable-static \
 	--enable-dbm \
 	--enable-o_direct \
 %if %{with sql}
@@ -395,7 +396,7 @@ CONFIGURE_TOP="../dist" \
 %configure \
 	--includedir=%{_includedir}/db_nss \
 	--enable-shared \
-	--disable-static \
+	--enable-static \
 	--enable-dbm \
 	--enable-o_direct \
 	--disable-tcl \
@@ -628,4 +629,3 @@ mv %{buildroot}%{_bindir}/{dbsql,db%{api}_sql}
 %{_libdir}/libdb_nss-5.so
 %{_libdir}/libdb_nss-%{api}.so
 %endif
-
