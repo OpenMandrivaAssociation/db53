@@ -16,11 +16,13 @@
 %define libdbnss %mklibname %{sname}nss %{api}
 %define devdbnss %mklibname %{sname}nss %{api} -d
 
+%define _disable_lto 1
+
 %bcond_with java
 %bcond_with	uclibc
 %bcond_without sql
 %bcond_without tcl
-%bcond_without db1
+%bcond_with db1
 # Define to build a stripped down version to use for nss libraries
 %bcond_with	nss
 
