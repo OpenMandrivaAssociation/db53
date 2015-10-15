@@ -279,6 +279,11 @@ cd dist
 ./s_config
 
 %build
+# fails to build in i586 with clang
+%ifarch %ix86
+export CC=gcc
+export CXX=g++
+%endif
 
 %ifarch ppc
 CFLAGS="$CFLAGS -D_GNU_SOURCE -D_REENTRANT"
