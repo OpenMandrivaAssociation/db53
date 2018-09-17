@@ -19,7 +19,6 @@
 %define _disable_lto 1
 
 %bcond_with java
-%bcond_with	uclibc
 %bcond_without sql
 %bcond_without tcl
 %bcond_with db1
@@ -35,7 +34,7 @@
 Summary:	The Berkeley DB database library for C
 Name:		%{sname}%{binext}
 Version:	%{version}
-Release:	13
+Release:	14
 License:	BSD
 Group:		System/Libraries
 Url:		http://www.oracle.com/technology/software/products/berkeley-db/
@@ -67,9 +66,6 @@ BuildRequires:	java-rpmbuild
 BuildRequires:	java-devel
 BuildRequires:	sharutils
 %endif
-%if %{with uclibc}
-BuildRequires:	uClibc-devel
-%endif
 
 %description
 The Berkeley Database (Berkeley DB) is a programmatic toolkit that provides
@@ -79,13 +75,6 @@ should be installed on all systems.
 
 %package -n	%{libname}
 Summary:	The Berkeley DB database library for C
-Group:		System/Libraries
-
-%description -n	%{libname}
-This package contains the shared library required by Berkeley DB.
-
-%package -n	uclibc-%{libname}
-Summary:	The Berkeley DB database library for C (uClibc build)
 Group:		System/Libraries
 
 %description -n	%{libname}
@@ -155,24 +144,10 @@ Group:		Databases
 This is a minimal package that ships with '%{name}_recover' only as it's
 required for using "RPM ACID".
 
-%package -n	uclibc-%{name}-utils
-Summary:	Command line tools for managing Berkeley DB databases
-Group:		Databases
-Provides:	uclibc-db-utils = %{api}
-%if !%{with parallel}
-Conflicts:	uclibc-db-utils < %{api}
-%endif
-
-%description -n	uclibc-%{name}-utils
-This package contains command line tools for managing Berkeley DB databases.
-
 %package -n	%{devname}
 Summary:	Development libraries/header files for the Berkeley DB library
 Group:		Development/Databases
 Requires:	%{libname} = %{EVRD}
-%if %{with uclibc}
-Requires:	uclibc-%{libname} = %{EVRD}
-%endif
 %if %{with sql}
 Requires:	%{libdbsql} = %{EVRD}
 %endif
@@ -301,28 +276,6 @@ export JAVACFLAGS="-nowarn"
 JAVA_MAKE="JAR=%{jar} JAVAC=%{javac} JAVACFLAGS="-nowarn" JAVA=%{java}"
 %endif
 CONFIGURE_TOP="$PWD/dist"
-
-%if %{with uclibc}
-mkdir -p build_uclibc
-pushd build_uclibc
-%uclibc_configure \
-	--includedir=%{_includedir}/%{name} \
-	--enable-shared \
-	--disable-static \
-	--disable-dbm \
-	--disable-systemtap \
-	--enable-o_direct \
-	--disable-sql \
-	--disable-compat185 \
-	--disable-dump185 \
-	--disable-tcl \
-	--disable-cxx \
-	--disable-java \
-	--enable-posixmutexes \
-	--with-mutex=POSIX/pthreads/library
-	%make
-popd
-%endif
 
 pushd build_unix
 CONFIGURE_TOP="../dist" \
@@ -458,15 +411,6 @@ popd
 %endif
 
 %install
-%if %{with uclibc}
-make -C build_uclibc install_lib install_utilities DESTDIR=%{buildroot}
-# XXX This is needed for parallel install with db4.2
-%if %{with parallel}
-for F in %{buildroot}%{uclibc_root}%{_bindir}/*db_* ; do
-	mv $F `echo $F | sed -e 's,db_,%{name}_,'`
-done
-%endif
-%endif
 make -C build_unix install_setup install_include install_lib install_utilities \
 	DESTDIR=%{buildroot} emode=755
 
@@ -502,11 +446,6 @@ mv %{buildroot}%{_bindir}/{dbsql,db%{api}_sql}
 %files -n %{libname}
 %doc LICENSE README
 %{_libdir}/libdb-%{api}.so
-
-%if %{with uclibc}
-%files -n uclibc-%{libname}
-%{uclibc_root}%{_libdir}/libdb-%{api}.so
-%endif
 
 %files -n %{libdbcxx}
 %{_libdir}/libdb_cxx-%{api}.so
@@ -564,24 +503,6 @@ mv %{buildroot}%{_bindir}/{dbsql,db%{api}_sql}
 %{_bindir}/db%{api}_sql
 %endif
 
-%if %{with uclibc}
-%files -n uclibc-%{name}-utils
-%{uclibc_root}%{_bindir}/%{name}_archive
-%{uclibc_root}%{_bindir}/%{name}_checkpoint
-%{uclibc_root}%{_bindir}/%{name}_deadlock
-%{uclibc_root}%{_bindir}/%{name}_dump*
-%{uclibc_root}%{_bindir}/%{name}_hotbackup
-%{uclibc_root}%{_bindir}/%{name}_load
-%{uclibc_root}%{_bindir}/%{name}_log_verify
-%{uclibc_root}%{_bindir}/%{name}_printlog
-%{uclibc_root}%{_bindir}/%{name}_replicate
-%{uclibc_root}%{_bindir}/%{name}_recover
-%{uclibc_root}%{_bindir}/%{name}_stat 
-%{uclibc_root}%{_bindir}/%{name}_tuner
-%{uclibc_root}%{_bindir}/%{name}_upgrade
-%{uclibc_root}%{_bindir}/%{name}_verify
-%endif
-
 %files -n %{name}_recover
 %doc docs/api_reference/C/db_recover.html
 %{_bindir}/%{name}_recover
@@ -600,10 +521,6 @@ mv %{buildroot}%{_bindir}/{dbsql,db%{api}_sql}
 %{_includedir}/db.h
 %{_libdir}/libdb.so
 %{_libdir}/libdb-5.so
-%if %{with uclibc}
-%{uclibc_root}%{_libdir}/libdb.so
-%{uclibc_root}%{_libdir}/libdb-5.so
-%endif
 %{_libdir}/libdb_cxx.so
 %{_libdir}/libdb_cxx-5.so
 %if %{with sql}
