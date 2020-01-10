@@ -206,7 +206,7 @@ modules which use Berkeley DB.
 # fix strange attribs
 find . -type f -perm 0444 -exec chmod 644 {} \;
 rm -r lang/sql/jdbc/doc
-%apply_patches
+%autopatch -p1
 
 pushd dist
 libtoolize --copy --force
