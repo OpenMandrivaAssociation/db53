@@ -34,7 +34,7 @@
 Summary:	The Berkeley DB database library for C
 Name:		%{sname}%{binext}
 Version:	%{version}
-Release:	15
+Release:	16
 License:	BSD
 Group:		System/Libraries
 Url:		https://www.oracle.com/technology/software/products/berkeley-db/
