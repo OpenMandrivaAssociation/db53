@@ -20,7 +20,7 @@
 
 %bcond_with java
 %bcond_without sql
-%bcond_without tcl
+%bcond_with tcl
 %bcond_with db1
 # Define to build a stripped down version to use for nss libraries
 %bcond_with	nss
