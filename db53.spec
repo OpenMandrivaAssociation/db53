@@ -49,6 +49,7 @@ Patch4:		atomic.patch
 Patch101:	db-4.7.25-jni-include-dir.patch
 Patch102:	db53-aarch64.patch
 
+BuildRequires:	m4
 BuildRequires:	ed
 BuildRequires:	libtool
 #BuildRequires:	systemtap-devel
